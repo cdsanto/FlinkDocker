@@ -11,6 +11,7 @@ resource "aws_ecr_repository" "my_first_ecr_repo" {
 ##Cluster creation
 resource "aws_ecs_cluster" "my_cluster" {
   name = "my-cluster" # Naming the cluster
+  vpc_id = var.vpcid
 }
 
 ##Task definition
@@ -76,6 +77,7 @@ resource "aws_alb" "application_load_balancer" {
 
 # Creating a security group for the load balancer:
 resource "aws_security_group" "load_balancer_security_group" {
+    vpc_id      = var.vpcid
   ingress {
     from_port   = 80 # Allowing traffic in from port 80
     to_port     = 80
@@ -90,7 +92,6 @@ resource "aws_security_group" "load_balancer_security_group" {
     cidr_blocks = ["0.0.0.0/0"] # Allowing traffic out to all IP addresses
   }
 }
-
 
 resource "aws_lb_target_group" "target_group" {
   name        = "target-group"
@@ -117,6 +118,7 @@ resource "aws_lb_listener" "listener" {
 ##Service Security Group
 
 resource "aws_security_group" "service_security_group" {
+    vpc_id = var.vpcid
   ingress {
     from_port = 0
     to_port   = 0
