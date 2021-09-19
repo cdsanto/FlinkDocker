@@ -11,7 +11,7 @@ resource "aws_ecr_repository" "my_first_ecr_repo" {
 ##Cluster creation
 resource "aws_ecs_cluster" "my_cluster" {
   name = "my-cluster" # Naming the cluster
-  vpc_id = var.vpcid
+  #vpc_id = var.vpcid
 }
 
 ##Task definition
