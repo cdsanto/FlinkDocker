@@ -61,27 +61,7 @@ resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole_policy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-# Providing a reference to our default VPC
-resource "aws_default_vpc" "default_vpc" {
-}
-
-##Getting VPC Info
-# Providing a reference to our default subnets
-resource "aws_default_subnet" "default_subnet_a" {
-  availability_zone = "us-east-2a"
-}
-
-resource "aws_default_subnet" "default_subnet_b" {
-  availability_zone = "us-east-2b"
-}
-
-resource "aws_default_subnet" "default_subnet_c" {
-  availability_zone = "us-east-2c"
-}
-
-
 ##ALB creation
-
 resource "aws_alb" "application_load_balancer" {
   name               = "test-lb-tf" # Naming our load balancer
   load_balancer_type = "application"
@@ -168,7 +148,7 @@ resource "aws_ecs_service" "my_first_service" {
   }
 
   network_configuration {
-    subnets          = ["${aws_default_subnet.default_subnet_a.id}", "${aws_default_subnet.default_subnet_b.id}", "${aws_default_subnet.default_subnet_c.id}"]
+    subnets          = [    var.pub_subnet[0], var.pub_subnet[1], var.pub_subnet[2]]
     assign_public_ip = true # Providing our containers with public IPs
     security_groups  = ["${aws_security_group.service_security_group.id}"] # Setting the security group
   }
