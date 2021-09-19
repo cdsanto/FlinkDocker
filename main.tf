@@ -61,15 +61,6 @@ resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole_policy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-##Service creation
-resource "aws_ecs_service" "my_first_service" {
-  name            = "my-first-service"                             # Naming our first service
-  cluster         = "${aws_ecs_cluster.my_cluster.id}"             # Referencing our created Cluster
-  task_definition = "${aws_ecs_task_definition.my_first_task.arn}" # Referencing the task our service will spin up
-  launch_type     = "FARGATE"
-  desired_count   = 1 # Setting the number of containers we want deployed to 3
-}
-
 # Providing a reference to our default VPC
 resource "aws_default_vpc" "default_vpc" {
 }
@@ -168,7 +159,7 @@ resource "aws_ecs_service" "my_first_service" {
   cluster         = "${aws_ecs_cluster.my_cluster.id}"             # Referencing our created Cluster
   task_definition = "${aws_ecs_task_definition.my_first_task.arn}" # Referencing the task our service will spin up
   launch_type     = "FARGATE"
-  desired_count   = 3 # Setting the number of containers to 3
+  desired_count   = 1 # Setting the number of containers to 3
 
   load_balancer {
     target_group_arn = "${aws_lb_target_group.target_group.arn}" # Referencing our target group
